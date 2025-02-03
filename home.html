@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Keuangan</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f4f4f4;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body onload="loadData()">
+    <div class="container">
+        <h3>Manajemen Keuangan</h3>
+        <div>
+            <h5>Pemasukkan</h5>
+            <input type="number" id="income" placeholder="Uang Masuk">
+            <button onclick="addIncome()">Input</button>
+        </div>
+        <div>
+            <h5>Pengeluaran</h5>
+            <input type="number" id="expense" placeholder="Nilai Uang">
+            <input type="text" id="description" placeholder="Keterangan">
+            <button onclick="addExpense()">Update</button>
+        </div>
+        <button onclick="showBalance()">Saldo</button>
+        <button onclick="showChart()">Grafik Pengeluaran</button>
+        <div id="history"></div>
+        <canvas id="expenseChart"></canvas>
+    </div>
+    
+    <script>
+        let balance = 0;
+        let transactions = [];
+
+        function saveData() {
+            localStorage.setItem('balance', balance);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        function loadData() {
+            balance = parseInt(localStorage.getItem('balance')) || 0;
+            transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            showBalance();
+        }
+
+        function addIncome() {
+            let income = parseInt(document.getElementById('income').value);
+            if (!isNaN(income)) {
+                balance += income;
+                transactions.push({ type: 'income', amount: income, description: 'Pemasukan' });
+                saveData();
+                alert('Pemasukkan berhasil ditambahkan!');
+            }
+            document.getElementById('income').value = '';
+        }
+
+        function addExpense() {
+            let expense = parseInt(document.getElementById('expense').value);
+            let desc = document.getElementById('description').value || 'Pengeluaran';
+            if (!isNaN(expense) && expense <= balance) {
+                balance -= expense;
+                transactions.push({ type: 'expense', amount: expense, description: desc });
+                saveData();
+                alert('Pengeluaran berhasil ditambahkan!');
+            } else {
+                alert('Saldo tidak cukup!');
+            }
+            document.getElementById('expense').value = '';
+            document.getElementById('description').value = '';
+        }
+
+        function showBalance() {
+            let historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = '<h5>Riwayat Transaksi</h5>';
+            transactions.forEach(t => {
+                historyDiv.innerHTML += `<p>${t.description}: Rp${t.amount}</p>`;
+            });
+            historyDiv.innerHTML += `<h4>Saldo Saat Ini: Rp${balance}</h4>`;
+        }
+
+        function showChart() {
+            let ctx = document.getElementById('expenseChart').getContext('2d');
+            let incomeTotal = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            let expenseTotal = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pemasukan', 'Pengeluaran'],
+                    datasets: [{
+                        label: 'Keuangan',
+                        data: [incomeTotal, expenseTotal],
+                        backgroundColor: ['green', 'red']
+                    }]
+                }
+            });
+        }
+    </script>
+</body>
+</html>

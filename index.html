@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Keuangan</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="loadData()">
+    <div class="container">
+        <h3>Manajemen Keuangan</h3>
+        <div>
+            <h5>Pemasukkan</h5>
+            <p id="tanggal">Hari: <span id="hari"></span> | Tanggal: <span id="tgl"></span></p>
+            <input type="number" id="income" placeholder="Uang Masuk">
+            <button onclick="addIncome()">Input</button>
+        </div>
+        <div>
+            <h5>Pengeluaran</h5>
+            <p id="tanggal">Hari: <span id="hari"></span> | Tanggal: <span id="tgl"></span></p>
+            <input type="number" id="expense" placeholder="Nilai Uang">
+            <input type="text" id="description" placeholder="Keterangan">
+            <button onclick="addExpense()">Update</button>
+        </div>
+        <button onclick="showBalance()">Saldo</button>
+        <button onclick="showChart()">Grafik Pengeluaran</button>
+        <div id="history"></div>
+        <canvas id="expenseChart"></canvas>
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
