@@ -12,16 +12,34 @@
         <h3>Manajemen Keuangan</h3>
         <div>
             <h5>Pemasukkan</h5>
-            <p id="tanggal">Hari: <span id="hari"></span> | Tanggal: <span id="tgl"></span></p>
-            <input type="number" id="income" placeholder="Uang Masuk">
-            <button onclick="addIncome()">Input</button>
+            <p class="tanggal">Hari: <span class="hari"></span> | Tanggal: <span class="tgl"></span></p>
+            <tr>
+                <td>
+                    <input type="number" id="income" placeholder="Uang Masuk">
+                </td>
+                <td>
+                    <button onclick="addIncome()">Input</button>
+                </td>
+            </tr>
+
         </div>
         <div>
+        
             <h5>Pengeluaran</h5>
-            <p id="tanggal">Hari: <span id="hari"></span> | Tanggal: <span id="tgl"></span></p>
-            <input type="number" id="expense" placeholder="Nilai Uang">
-            <input type="text" id="description" placeholder="Keterangan">
-            <button onclick="addExpense()">Update</button>
+            <p class="tanggal">Hari: <span class="hari"></span> | Tanggal: <span class="tgl"></span></p>
+            <tr>
+                <td>
+                    <input type="number" id="expense" placeholder="Nilai Uang">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="description" placeholder="Keterangan">
+                </td>
+                <td>
+                    <button onclick="addExpense()">Update</button>
+                </td>
+            </tr>
         </div>
         <button onclick="showBalance()">Saldo</button>
         <button onclick="showChart()">Grafik Pengeluaran</button>
